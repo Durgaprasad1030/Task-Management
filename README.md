@@ -1,70 +1,142 @@
-# Getting Started with Create React App
+# 📝 Task Manager with Role-Based Access Control (RBAC)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack **MERN** application designed to manage tasks with specific permissions for **Admins** and **Standard Users**. This project demonstrates secure authentication, role-based data fetching, and a modern, responsive UI.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### 🔐 Authentication & Security
+- **User Registration & Login** with JWT (JSON Web Token).
+- **Role-Based Access:**
+  - **Admin:** Can view, edit, and delete *all* tasks and see user details.
+  - **User:** Can only view, edit, and delete their *own* tasks.
+- **Password Hashing** using bcrypt.js.
+- **Protected Routes** on the frontend.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 📋 Task Management
+- **CRUD Operations:** Create, Read, Update, Delete tasks.
+- **Search & Filter:** Real-time search by title and filtering by task status (Pending, In Progress, Completed).
+- **Pagination:** Efficiently load tasks in chunks.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🎨 UI/UX
+- **Modern Interface:** Clean, card-based layout with shadows and rounded corners.
+- **Animations:** Smooth entry animations, hover effects, and focus states.
+- **Responsive:** Works on desktop and mobile.
+- **User Feedback:** Inline error handling and loading states.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Tech Stack
 
-### `npm run build`
+- **Frontend:** React.js, React Router v6, Axios, CSS3 (Custom Animations).
+- **Backend:** Node.js, Express.js.
+- **Database:** MongoDB (Mongoose ODM).
+- **Auth:** JWT (JSON Web Tokens), Bcrypt.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ⚙️ Installation & Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Follow these steps to run the project locally.
 
-### `npm run eject`
+### 1. Clone the Repository
+```bash
+git clone <your-repo-url>
+cd task-manager
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. Backend Setup
+Navigate to the backend folder and install dependencies:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Bash
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+cd backend
+npm install
+Create a .env file in the backend folder and add the following variables:
 
-## Learn More
+Code snippet
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/taskmanager
+JWT_SECRET=mySuperSecretKey123
+Start the Backend Server:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Bash
 
-### Code Splitting
+npm run dev
+(You should see "MongoDB Connected" in the terminal)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. Frontend Setup
+Open a new terminal window, navigate to the frontend folder, and install dependencies:
 
-### Analyzing the Bundle Size
+Bash
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+cd frontend
+npm install
+Start the React App:
 
-### Making a Progressive Web App
+Bash
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+npm start
+The app will automatically open at http://localhost:3000.
 
-### Advanced Configuration
+🧪 Testing with Sample Data (Seeder)
+You can quickly populate the database with test users and tasks using the included script.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Run this command inside the /backend folder:
 
-### Deployment
+Bash
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+node seeder.js
+Use these credentials to test:
 
-### `npm run build` fails to minify
+Role	Email	Password	Capabilities
+Admin	admin@example.com	password123	View/Edit/Delete ALL tasks
+User	jane@example.com	password123	Manage OWN tasks only
+User	john@example.com	password123	Manage OWN tasks only
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Export to Sheets
+
+🔗 API Endpoints
+Method	Endpoint	Description	Access
+POST	/api/auth/register	Register a new user	Public
+POST	/api/auth/login	Login & get Token	Public
+GET	/api/tasks	Get all tasks (supports ?search= & ?status=)	Auth Required
+POST	/api/tasks	Create a new task	Auth Required
+PUT	/api/tasks/:id	Update a task	Owner/Admin
+DELETE	/api/tasks/:id	Delete a task	Owner/Admin
+
+Export to Sheets
+
+📂 Project Structure
+Plaintext
+
+task-manager/
+├── backend/
+│   ├── config/         # Database connection logic
+│   ├── controllers/    # Logic for Authentication and Task CRUD
+│   ├── middleware/     # Auth verification & Admin checks
+│   ├── models/         # Mongoose Schemas (User, Task)
+│   ├── routes/         # API Routes definitions
+│   ├── seeder.js       # Script to populate dummy data
+│   └── server.js       # App entry point
+│
+└── frontend/
+    ├── src/
+    │   ├── components/ # Reusable components (Navbar, PrivateRoute)
+    │   ├── pages/      # Main pages (Login, Dashboard, TaskForm)
+    │   ├── utils/      # Axios configuration
+    │   └── App.css     # Global styling and animations
+🛡️ Future Improvements
+To make this project enterprise-ready, the following features are planned:
+
+[ ] Forgot Password: Email reset link via Nodemailer.
+
+[ ] Security Hardening: HttpOnly Cookies instead of localStorage.
+
+[ ] File Uploads: Profile pictures using Multer & Cloudinary.
+
+[ ] Deployment: Hosting on Render/Vercel.
+
+Developed by [Your Name]"# Task-Management" 
